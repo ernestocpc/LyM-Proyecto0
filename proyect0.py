@@ -1,6 +1,7 @@
 from operator import length_hint
 import sys
 
+    
 filename=input('Nombre archivo: ')
 code = []
 context = 0
@@ -14,6 +15,9 @@ variables={}
 
 turn_options = {'left','right','around'}
 face_options = {'north', 'south','east','west'}
+object_options = {'Balloon','Chips'}
+move_options = {':front',':right',':left',':back'}
+
 with open(filename) as f:
     lines = f.read().splitlines()
     code = [line.strip() for line in lines if line != '']
@@ -24,7 +28,7 @@ def defvar(tokens):
     if len(tokens)==3:
         var_value = tokens[2][:-1]
         if var_value.isnumeric():
-            variables[tokens[1]] = tokens[2]
+            variables[tokens[1]] = tokens[2][:-1]
         else:
             output=False
     else:
@@ -35,7 +39,7 @@ def equals(tokens):
     if len(tokens)==3:
         var_value = tokens[2][:-1]
         if var_value.isnumeric():
-            variables[tokens[1]] = tokens[2]
+            variables[tokens[1]] = tokens[2][:-1]
         else:
             output=False
     else:
@@ -68,22 +72,67 @@ def face(tokens):
     
 def put(tokens):
     global output
-    pass
+    if len(tokens)==3:
+        if tokens[1] in object_options:
+            if tokens[2][:-1] not in variables and not tokens[2][:-1].isnumeric():
+                output = False
+        else:
+            output=False
+    else:
+        output=False
+
 def pick(tokens):
     global output
-    pass
+    if len(tokens)==3:
+        if tokens[1] in object_options:
+            if tokens[2][:-1] not in variables and not tokens[2][:-1].isnumeric():
+                output = False
+        else:
+            output=False
+    else:
+        output=False
+    
 def moveDir(tokens):
     global output
-    pass
+    if len(tokens) == 3:
+        if tokens[1] not in variables and not tokens[1].isnumeric():
+            output=False
+        if tokens[2][:-1] not in move_options:
+            output=False
+    else:
+        output = False 
+
 def runDirs(tokens):
+    # Falta asegurarse que la direccion final sea igual a la inicial.
+
     global output
-    pass
+    if len(tokens) ==2:
+        directions= tokens[1][:-1]
+        if isinstance(directions,list) and not directions:
+            for direction in directions:
+                if direction not in move_options:
+                    output = False 
+        else:
+            output=False
+    else:
+        output=False
+    
+    
 def moveFace(tokens):
     global output
-    pass
+    if len(tokens) == 3:
+        if tokens[1] not in variables or not tokens[1].isnumeric():
+            output=False
+        if tokens[2][:-1] not in face_options:
+            output=False
+    else:
+        output=False
+    
 def skip(tokens):
     global output
-    pass
+    if len(tokens)!=1:
+        output=False
+    
 def CondIf(tokens):
     global output
     pass
