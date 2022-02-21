@@ -84,17 +84,11 @@ def parse_deffunc(iter: Iterator): # Has deffunc token taken
 def parse_not(iter: Iterator):
     next = iter.next()
     if next.type == Type.OP:
-        next = iter.next()
-        if next.type == Type.IDFUNC:
-            valid = parse_args(iter, next, Iterator(function_params[next.value]))
-            iter.next()
-            if not valid:
-                print("Misshaped NOT statement")
-                return False
-            return True
-        else:
-            print("NOT requires a no-params function or a block-function to work")
+        valid = parse_cond(iter)
+        if not valid:
+            print("Misshaped NOT statement")
             return False
+        return True
     elif next.type == Type.IDFUNC:
         next_char = iter.next()
         if next_char.type == Type.CLS and len(function_params[next.value]) == 0:

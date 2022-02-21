@@ -15,7 +15,7 @@
  	(move rotate))
 (foo 1 3)
 
-(defun goend (h)
+(defun goend ()
 	(if (not blocked-p)
  	((move one)
  		(goend))
