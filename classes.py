@@ -19,19 +19,27 @@ class Iterator:
     
     def __next__(self):
         self.index += 1
-        if self.index == len(self.list):
+        if self.index >= len(self.list):
             raise StopIteration
         return self.list[self.index]
     
     def next(self):
         if self.peek() == None:
             return None
-        return self.__next__()
+        item = self.__next__()
+        print(f"Consumed {item}")
+        return item
     
     def peek(self):
-        if self.index+1 == len(self.list):
+        if self.index+1 >= len(self.list):
             return None
         return self.list[self.index+1]
+    
+    def skip(self):
+        self.index += 1
+    
+    def view(self):
+        return self.list[self.index+1:]
         
 class Type(Enum):
     DEFID = auto()

@@ -2,6 +2,7 @@ from classes import Token, Type, Iterator
 from tokenizer import tokenizer
 
 function_params = {
+    "=": [Type.ID, Type.NUM],
     "move": [Type.NUM],
     "turn": [Type.DIRCONST],
     "face": [Type.CARDCONST],
@@ -25,6 +26,9 @@ def parse_args(iter: Iterator, token: Token ,args: Iterator): # Has func token t
     if expected_type == Type.NUM:
         expected_types.append(Type.ID)
         expected_types.append(Type.LOCALID)
+    elif expected_type == Type.ID:
+        expected_types.append(Type.LOCALID)
+
     if iter.peek().type in expected_types:
         iter.next()
         if args.peek() == None:
@@ -84,7 +88,10 @@ def parse_deffunc(iter: Iterator): # Has deffunc token taken
 def parse_not(iter: Iterator):
     next = iter.next()
     if next.type == Type.OP:
+        cond_type = iter.peek().type
         valid = parse_cond(iter)
+        if cond_type == Type.NOT:
+            iter.next()
         if not valid:
             print("Misshaped NOT statement")
             return False
@@ -180,13 +187,13 @@ def parse_block(iter: Iterator):  # Recieves as raw block ( no '(' taken )
         valid = False
         token = iter.peek() # Tries to guess what next character could be
         if token.type != Type.OP:
-            iter.next()
+            iter.next() # Takes said character unless we encounter another "block", in which case, we don't.
         if token.type == Type.IDFUNC:
             valid = parse_args(iter, token, Iterator(function_params[token.value]))
         elif token.type == Type.DEFID:
             valid = parse_defid(iter)
         elif token.type == Type.OP:
-            while True:
+            while True: # Blocks can have blocks! ( I hate this )
                 if not parse_block(iter):
                     return False
                 if iter.peek().type != Type.OP:
@@ -227,4 +234,6 @@ def parse_start(iter: Iterator):
 
 tokens = tokenizer()
 iter_tokens = Iterator(tokens)
+#for t in tokens:
+#    print(t)
 print(parse_start(iter_tokens))
