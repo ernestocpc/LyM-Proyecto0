@@ -40,8 +40,12 @@ def parse_args(iter: Iterator, token: Token ,args: Iterator): # Has func token t
         return False
 
 def parse_defid(iter: Iterator): # Has defid token taken
-    if iter.next().type != Type.ID:
-        print("Missing name on definition of variable")
+    next = iter.next()
+    if next.type not in [Type.ID, Type.LOCALID]:
+        if next.type == Type.NULL:
+            print("Redefinition of an already defined variable")
+        else:
+            print("Wrong symbol for name on definition of variable")
         return False
     if iter.next().type != Type.NUM:
         print("Missing number on definition of variable")
@@ -213,6 +217,9 @@ def parse_block(iter: Iterator):  # Recieves as raw block ( no '(' taken )
             valid = parse_repeat(iter)
         elif token.type == Type.RUNDIRS:
             valid = parse_run_dirs(iter)
+        elif token.type == Type.NULL:
+            print(f"Parsing Error: The token {token.value} is invalid in this context")
+            return False
         iter.next()
         return valid
     else:
@@ -235,5 +242,10 @@ def parse_start(iter: Iterator):
 tokens = tokenizer()
 iter_tokens = Iterator(tokens)
 #for t in tokens:
-#    print(t)
-print(parse_start(iter_tokens))
+    #print(t)
+valid = parse_start(iter_tokens)
+
+if valid:
+    print("The file is VALID code")
+else:
+    print("The file has INVALID code")

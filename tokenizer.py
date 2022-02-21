@@ -92,7 +92,16 @@ def get_token(keyword: str, tokens: list)->Token:
     global depth
     global clear_depth
 
-    if keyword in token_identifiers:
+    if len(tokens) > 0 and tokens[-1].type == Type.DEFID:
+        if keyword in token_identifiers:
+            return Token(Type.NULL, keyword)
+        type = Type.ID
+        if clear_depth > -1:
+            type = Type.LOCALID
+            local_identifiers.add(keyword)
+        token_identifiers[keyword] = type
+        return Token(type, keyword)
+    elif keyword in token_identifiers:
         return Token(token_identifiers[keyword], keyword)
     elif keyword.isnumeric():
         return Token(Type.NUM, int(keyword))
@@ -100,9 +109,6 @@ def get_token(keyword: str, tokens: list)->Token:
         token_identifiers[keyword] = Type.IDFUNC
         clear_depth = depth
         return Token(Type.IDFUNC, keyword)
-    elif tokens[-1].type == Type.DEFID:
-        token_identifiers[keyword] = Type.ID
-        return Token(Type.ID, keyword)
     elif tokens[-1].type == Type.LOCALID or [t.type for t in tokens[-3:]] == [Type.DEFFUNC, Type.IDFUNC, Type.OP]:
         i = 0
         for token in reversed(tokens):

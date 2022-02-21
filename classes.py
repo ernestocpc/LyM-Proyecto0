@@ -27,7 +27,6 @@ class Iterator:
         if self.peek() == None:
             return None
         item = self.__next__()
-        print(f"Consumed {item}")
         return item
     
     def peek(self):
