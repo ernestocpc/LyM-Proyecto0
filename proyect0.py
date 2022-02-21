@@ -16,7 +16,7 @@ variables={}
 turn_options = {'left','right','around'}
 face_options = {'north', 'south','east','west'}
 object_options = {'Balloon','Chips'}
-move_options = {':front',':right',':left',':back'}
+move_options = {':up',':right',':left',':down'}
 
 with open(filename) as f:
     lines = f.read().splitlines()
@@ -221,7 +221,3 @@ while context >=0:
     if context<0 or output == False:
         print('Invalid Sintaxis')
         break
-            
-
-
-
