@@ -10,7 +10,7 @@ depth = 0
 clear_depth = float('-inf')
 local_identifiers = set()
 context = 0
-
+output = True
 token_identifiers = {
         "defvar": Type.DEFID,
         "=": Type.IDFUNC,
@@ -125,8 +125,8 @@ def get_token(keyword: str, tokens: list)->Token:
         return Token(Type.NULL, keyword)
 
 tokens = tokenizer()
-
-for token in tokens:
+iter_tokens= Iterator(tokens)
+for token in iter_tokens:
     print(token)
     if token.type == Type.OP:
         context +=1
@@ -135,7 +135,8 @@ for token in tokens:
         context -=1
         continue
     elif token.type == Type.DEIFD:
-        defId()
+        pass
+        
     elif token.type == Type.IDFUNC:
         defId()
     elif token.type == Type.IF:
@@ -154,8 +155,9 @@ for token in tokens:
         defId()
     elif token.type == Type.ITEMCONST:
         defId()
+
     if context <0:
-        print('Invalid Grammar ')
+        output=False
         break
     
 def defId():
