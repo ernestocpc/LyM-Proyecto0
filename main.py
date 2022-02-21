@@ -9,10 +9,10 @@ symbols = {
 depth = 0
 clear_depth = float('-inf')
 local_identifiers = set()
+context = 0
 
 token_identifiers = {
         "defvar": Type.DEFID,
-        "define": Type.DEFID,
         "=": Type.IDFUNC,
         "move": Type.IDFUNC,
         "turn": Type.IDFUNC,
@@ -125,5 +125,38 @@ def get_token(keyword: str, tokens: list)->Token:
         return Token(Type.NULL, keyword)
 
 tokens = tokenizer()
+
 for token in tokens:
     print(token)
+    if token.type == Type.OP:
+        context +=1
+        continue
+    elif token.type == Type.CLS:
+        context -=1
+        continue
+    elif token.type == Type.DEIFD:
+        defId()
+    elif token.type == Type.IDFUNC:
+        defId()
+    elif token.type == Type.IF:
+        defId()
+    elif token.type == Type.LOOP:
+        defId()
+    elif token.type == Type.REP:
+        defId()
+    elif token.type == Type.DEFFUNC:
+        defId()
+    elif token.type == Type.COND:
+        defId()
+    elif token.type == Type.DIRCONST:
+        defId()
+    elif token.type == Type.CARDCONST:
+        defId()
+    elif token.type == Type.ITEMCONST:
+        defId()
+    if context <0:
+        print('Invalid Grammar ')
+        break
+    
+def defId():
+    pass
