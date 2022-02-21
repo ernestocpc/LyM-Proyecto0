@@ -8,17 +8,16 @@
 (turn :left)
 )
 
-
-(define one 1)
+(defvar one 1)
 (defun foo (c p)
  	(put :chips c)
 	(put :balloons p)
  	(move rotate))
 (foo 1 3)
 
-(defun goend ()
+(defun goend (h)
 	(if (not blocked-p)
  	((move one)
  		(goend))
  	(skip)))
-(run-dirs :left :up :left :down :right)
+(run-dirs :left :up :left :down)

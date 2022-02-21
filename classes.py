@@ -23,6 +23,11 @@ class Iterator:
             raise StopIteration
         return self.list[self.index]
     
+    def next(self):
+        if self.peek() == None:
+            return None
+        return self.__next__()
+    
     def peek(self):
         if self.index+1 == len(self.list):
             return None
@@ -34,7 +39,8 @@ class Type(Enum):
     IF =auto()
     LOOP =auto()
     REP =auto()
-    COND = auto()
+    RUNDIRS = auto()
+    NOT = auto()
     NUM = auto()
     LOCALID = auto()
     ID = auto()
