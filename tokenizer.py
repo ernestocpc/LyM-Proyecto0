@@ -101,6 +101,7 @@ def get_token(keyword: str, tokens: list)->Token:
             local_identifiers.add(keyword)
         token_identifiers[keyword] = type
         return Token(type, keyword)
+
     elif keyword in token_identifiers:
         return Token(token_identifiers[keyword], keyword)
     elif keyword.isnumeric():

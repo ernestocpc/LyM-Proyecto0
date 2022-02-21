@@ -23,6 +23,7 @@ def parse_args(iter: Iterator, token: Token ,args: Iterator): # Has func token t
         return True
 
     expected_types = [expected_type]
+
     if expected_type == Type.NUM:
         expected_types.append(Type.ID)
         expected_types.append(Type.LOCALID)
@@ -185,7 +186,7 @@ def parse_run_dirs(iter: Iterator):
         return True
     return False
 
-def parse_block(iter: Iterator):  # Recieves as raw block ( no '(' taken )
+def parse_block(iter: Iterator):  # Recieves as raw block ( no '(' taken ) Iterator
     token = iter.next() # Grabs hopefully '('
     if token.type == Type.OP:
         valid = False
@@ -234,9 +235,6 @@ def parse_start(iter: Iterator):
         return parse_start(iter)
     elif iter.peek().type == Type.EOF:
         return value
-    print("----")
-    for i in iter:
-        print(i)
     return False
 
 tokens = tokenizer()
