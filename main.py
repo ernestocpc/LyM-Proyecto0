@@ -1,4 +1,4 @@
-from classes import Token, Type
+from classes import Token, Type, Iterator
 import symbol
 
 symbols = {
@@ -123,7 +123,3 @@ def get_token(keyword: str, tokens: list)->Token:
         return Token(Type.LOCALID, keyword)
     else:
         return Token(Type.NULL, keyword)
-
-tokens = tokenizer()
-for token in tokens:
-    print(token)
