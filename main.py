@@ -1,4 +1,4 @@
-from classes import Token, Type
+from classes import Token, Type, Iterator
 import symbol
 
 symbols = {
