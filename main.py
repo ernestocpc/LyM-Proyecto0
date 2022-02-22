@@ -1,5 +1,5 @@
 from classes import Token, Type, Iterator
-from tokenizer import tokenizer
+from tokenizer import tokenizer, load
 
 function_params = {
     "=": [Type.ID, Type.NUM],
@@ -90,16 +90,14 @@ def parse_deffunc(iter: Iterator): # Has deffunc token taken
         print("Misshaped function definition")
         return False
 
-def parse_not(iter: Iterator):
+def parse_not(iter: Iterator): # (not (cond)) , se consuma ( y el not
     next = iter.next()
     if next.type == Type.OP:
-        cond_type = iter.peek().type
         valid = parse_cond(iter)
-        if cond_type == Type.NOT:
-            iter.next()
         if not valid:
             print("Misshaped NOT statement")
             return False
+        iter.next()
         return True
     elif next.type == Type.IDFUNC:
         next_char = iter.next()
@@ -111,7 +109,7 @@ def parse_not(iter: Iterator):
     else:
         print(f"NOT operator cannot use token {next}")
 
-def parse_cond(iter: Iterator):
+def parse_cond(iter: Iterator): # (not (cond)) , se consuma (
     next = iter.next()
     if next.type in (Type.IDFUNC, Type.NOT):
         if next.type == Type.IDFUNC:
@@ -221,7 +219,8 @@ def parse_block(iter: Iterator):  # Recieves as raw block ( no '(' taken ) Itera
         elif token.type == Type.NULL:
             print(f"Parsing Error: The token {token.value} is invalid in this context")
             return False
-        iter.next()
+        if token.type != Type.NOT:
+            iter.next()
         return valid
     else:
         print("Expected open parenthesis")
@@ -237,10 +236,9 @@ def parse_start(iter: Iterator):
         return value
     return False
 
+load(input("Colocar nombre archivo: "))
 tokens = tokenizer()
 iter_tokens = Iterator(tokens)
-#for t in tokens:
-    #print(t)
 valid = parse_start(iter_tokens)
 
 if valid:

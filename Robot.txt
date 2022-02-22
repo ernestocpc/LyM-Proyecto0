@@ -16,7 +16,7 @@
 (foo 1 3)
 
 (defun goend ()
-	(if (not blocked-p)
+	(if (not (can-move-p :north))
  	((move one)
  		(goend))
  	(skip)))

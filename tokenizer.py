@@ -46,15 +46,16 @@ token_identifiers = {
         ":balloons": Type.ITEMCONST
     }
 
-filename = "Robot.txt"
-lines = []
 code = ""
 
-with open(filename) as f:
-    lines = [line.strip() for line in f.read().splitlines() if line != '']
+def load(filename: str):
+    global code
+    lines = []
+    with open(filename) as f:
+        lines = [line.strip() for line in f.read().splitlines() if line != '']
 
-for line in lines:
-    code += line
+    for line in lines:
+        code += line
 
 def tokenizer()->list:
     global depth
